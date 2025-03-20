@@ -5,11 +5,11 @@
 # LICENSE file in the root directory of this source tree.
 
 from .build_sam import (
-    build_sam,
-    build_sam_vit_h,
-    build_sam_vit_l,
-    build_sam_vit_b,
-    sam_model_registry,
+    build_san,
+    build_san_vit_h,
+    build_san_vit_l,
+    build_san_vit_b,
+    san_model_registry,
 )
 from .predictor import SamPredictor
 from .automatic_mask_generator import SamAutomaticMaskGenerator

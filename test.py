@@ -1,4 +1,4 @@
-from segment_anything import sam_model_registry
+from segment_anything import san_model_registry
 import torch.nn as nn
 import torch
 import argparse
@@ -30,8 +30,8 @@ def parse_args():
     parser.add_argument("--data_path", type=str, default=r"./histology",
                         help="train data path")
     parser.add_argument("--metrics", nargs='+', default=['iou', 'dice'], help="metrics")
-    parser.add_argument("--model_type", type=str, default="vit_b", help="sam model_type")
-    parser.add_argument("--sam_checkpoint", type=str, default=r"SAN\pretrain_model\san.pth", help="sam checkpoint")
+    parser.add_argument("--model_type", type=str, default="vit_b", help="san model_type")
+    parser.add_argument("--sam_checkpoint", type=str, default=r"SAN\pretrain_model\san.pth", help="san checkpoint")
     parser.add_argument("--auto_prompt", type=bool, default=True, help="use auto prompt")
 
     parser.add_argument("--boxes_prompt", type=bool, default=True, help="use boxes prompt")
@@ -136,7 +136,7 @@ def main(args):
     IoU_list = 0.0
     F1_score_list = 0.0
     acc_list = 0.0
-    model = sam_model_registry[args.model_type](args).to(args.device)
+    model = san_model_registry[args.model_type](args).to(args.device)
 
     criterion = FocalDiceloss_IoULoss()
     test_dataset = TestingDataset(data_path=args.data_path, image_size=args.image_size, mode='test', requires_name=True,

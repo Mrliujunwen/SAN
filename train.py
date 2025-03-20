@@ -1,4 +1,4 @@
-from segment_anything import sam_model_registry, SamPredictor
+from segment_anything import san_model_registry, SamPredictor
 import torch.nn as nn
 import torch
 import argparse
@@ -36,8 +36,8 @@ def parse_args():
     parser.add_argument("--point_num", type=int, default=1, help="point num")
     parser.add_argument("--lr", type=float, default=1e-4, help="learning rate")
     parser.add_argument("--resume", type=str, default=None, help="load resume")
-    parser.add_argument("--model_type", type=str, default="vit_b", help="sam model_type")
-    parser.add_argument("--sam_checkpoint", type=str, default="SAN\pretrain_model\san.pth", help="sam checkpoint")
+    parser.add_argument("--model_type", type=str, default="vit_b", help="san model_type")
+    parser.add_argument("--sam_checkpoint", type=str, default="SAN\pretrain_model\san.pth", help="san checkpoint")
     parser.add_argument("--iter_point", type=int, default=8, help="point iterations")
     parser.add_argument('--lr_scheduler', type=str, default=None, help='lr scheduler')
     parser.add_argument("--point_list", type=list, default=[1, 3, 5, 9], help="point_list")
@@ -222,7 +222,7 @@ def train_one_epoch(args, model, optimizer, train_loader, epoch, criterion):
         if int(batch + 1) % 200 == 0:
             print(f"epoch:{epoch + 1}, iteration:{batch + 1}, loss:{loss.item()}")
             save_path = os.path.join(f"{args.work_dir}/models", args.run_name,
-                                     f"epoch{epoch + 1}_batch{batch + 1}_sam.pth")
+                                     f"epoch{epoch + 1}_batch{batch + 1}_san.pth")
             state = {'model': model.state_dict(), 'optimizer': optimizer}
             torch.save(state, save_path)
 
@@ -375,7 +375,7 @@ def test_one_epoch(test_loader, model, epoch):
 
 
 def main(args):
-    model = sam_model_registry[args.model_type](args).to(args.device)
+    model = san_model_registry[args.model_type](args).to(args.device)
     optimizer = optim.Adam(model.parameters(), lr=args.lr)
     criterion = FocalDiceloss_IoULoss()
 
@@ -422,7 +422,7 @@ def main(args):
         print("test:{}".format(epoch))
         model.eval()
         test_average_loss,test_metrics=test_one_epoch(test_loader,model,epoch)
-        save_path = os.path.join(args.work_dir, "models", args.run_name, f"epoch{epoch + 1}_test_sam.pth")
+        save_path = os.path.join(args.work_dir, "models", args.run_name, f"epoch{epoch + 1}_test_san.pth")
         state = {'model': model.float().state_dict(), 'optimizer': optimizer}
         torch.save(state, save_path)
         if args.lr_scheduler is not None:
@@ -444,7 +444,7 @@ def main(args):
 
         # if average_loss < best_loss:
         #     best_loss = average_loss
-        #     save_path = os.path.join(args.work_dir, "models", args.run_name, f"epoch{epoch + 1}_sam.pth")
+        #     save_path = os.path.join(args.work_dir, "models", args.run_name, f"epoch{epoch + 1}_san.pth")
         #     state = {'model': model.float().state_dict(), 'optimizer': optimizer}
         #     torch.save(state, save_path)
         #     if args.use_amp:

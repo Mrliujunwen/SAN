@@ -9,7 +9,7 @@ from functools import partial
 from .modeling import ImageEncoderViT, MaskDecoder, PromptEncoder, Sam, TwoWayTransformer
 from torch.nn import functional as F
 
-def build_sam_vit_h(args):
+def build_san_vit_h(args):
     return _build_sam(
         encoder_embed_dim=1280,
         encoder_depth=32,
@@ -21,10 +21,10 @@ def build_sam_vit_h(args):
     )
 
 
-build_sam = build_sam_vit_h
+build_san = build_san_vit_h
 
 
-def build_sam_vit_l(args):
+def build_san_vit_l(args):
     return _build_sam(
         encoder_embed_dim=1024,
         encoder_depth=24,
@@ -36,7 +36,7 @@ def build_sam_vit_l(args):
     )
 
 
-def build_sam_vit_b(args):
+def build_san_vit_b(args):
     return _build_sam(
         encoder_embed_dim=768,
         encoder_depth=12,
@@ -49,11 +49,11 @@ def build_sam_vit_b(args):
     )
 
 
-sam_model_registry = {
-    "default": build_sam_vit_h,
-    "vit_h": build_sam_vit_h,
-    "vit_l": build_sam_vit_l,
-    "vit_b": build_sam_vit_b,
+san_model_registry = {
+    "default": build_san_vit_h,
+    "vit_h": build_san_vit_h,
+    "vit_l": build_san_vit_l,
+    "vit_b": build_san_vit_b,
 }
 
 
